@@ -17,9 +17,9 @@ c <- add_one(5,7)
 print(c)
 
 ## Operationen werden vektorisiert
-b <- c(1,2,3)
+b <- c(1, 2, 3)
 b+1
-
+ 
 b*2+1
 
 ## Data Frames beinhalten Daten
