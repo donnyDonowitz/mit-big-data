@@ -81,3 +81,21 @@ summarize(flights, mean(dep_delay))
 # PROBLEM: gibt anscheinend mind. ein Datum dazu nicht, deshalb Fehler: NA
 # mit na.rm berechnet man ihn für alle vorhandenden Werte
 summarize(flights, mean(dep_delay, na.rm=TRUE))
+
+## Pipeliens
+
+summarize(select(flights, year, dep_delay, carrier), dep_delay=mean(dep_delay, na.rm=TRUE))
+
+# viele geschachtelte Ausdrücke können einfacher über pipes arrangiert werden
+
+flights %>% select(year, dep_delay, carrier) %>%
+  summarize(dep_delay=mean(dep_delay, na.rm=TRUE))
+
+## group_by Gruppierung
+
+# mittlere verspätung nach Fluglinie
+
+flights %>% select(year, dep_delay, carrier) %>%
+  group_by(carrier) %>%
+  summarize(dep_delay=mean(dep_delay, na.rm=TRUE)) %>%
+  arrange(desc(dep_delay))
