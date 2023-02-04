@@ -1,4 +1,5 @@
 library(tidyverse)
+library(nycflights13)
 
 print("moinsn")
 
@@ -31,4 +32,52 @@ summary(mpg$class)
 unique(mpg$class)
 
 ## Zusatzeigenschft in den Plot einbauen 'Fahrzeugklasse'
-ggplot(mpg, aes(x=displ, y=hwy, colour=class)) + geom_point() + geom_smooth()
+ggplot(mpg, aes(x=displ, y=hwy, colour=class)) + geom_point()
+
+## filter Baz
+
+nycflights13::flights
+filter(flights, month==1)
+#filter(flights, month %in% c(9,11,12))
+filter(flights, (arr_delay>120 & dep_delay>120))
+
+## größe herausfinden
+# dimension Zeilen X Spalten
+dim(flights)
+# anzahl spalten
+ncol(flights)
+# anzahl spalten
+nrow(flights)
+
+nrow(filter(flights, (arr_delay>120 & dep_delay>120)))
+
+## arrange
+
+arrange(flights, dep_delay)
+arrange(flights, desc(dep_delay))
+arrange(flights, desc(dep_delay), carrier)
+
+## select
+# nur bestimmte Spalten betrachten
+select(flights, year, dep_delay, carrier)
+select(flights, distance, air_time)
+
+# sub datensatz
+dat.sub <- select(flights, distance, air_time)
+
+## mutate
+# ableitungen erstellen, fügt zusätzliche Spalten hinzu
+
+# meilen pro minute
+mutate(dat.sub, airspeed=distance/air_time)
+
+# in km/h
+# 1,609 KM = 1 mile
+mutate(dat.sub, distance_km=1.609*distance, air_time_h=air_time/60, kmh=distance_km/air_time_h)
+
+## summarize
+# mittlere verspätung
+summarize(flights, mean(dep_delay))
+# PROBLEM: gibt anscheinend mind. ein Datum dazu nicht, deshalb Fehler: NA
+# mit na.rm berechnet man ihn für alle vorhandenden Werte
+summarize(flights, mean(dep_delay, na.rm=TRUE))
