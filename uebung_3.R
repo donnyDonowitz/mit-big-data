@@ -33,6 +33,8 @@ ggcorrplot(cor(flights %>% select(arr_delay, dep_delay, month) %>% na.omit() %>%
 ## correlation von Fluglänge zu departure delay - arrival
 # je länger die Flugzeit, desto höher die Warhscheinlichkeit, etwas von der Verspätung leicht aufzuholen
 
-sub.dat <- flights %>% select(dep_delay, arr_delay, distance)  %>% na.omit()  %>% mutate(delay_diff=dep_delay-arr_delay) %>% group_by(distance) 
+sub.dat <- flights %>% select(dep_delay, arr_delay, distance)  %>% na.omit()  %>% mutate(delay_diff=dep_delay-arr_delay) %>% group_by(distance) %>% sample_frac(0.1)
 cor(select(sub.dat, distance, delay_diff))
 ggcorrplot(cor(select(sub.dat, distance, delay_diff)))
+
+ggplot(sub.dat, aes(x=distance, y=delay_diff)) + geom_point() + geom_smooth()
