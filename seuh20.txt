@@ -1,0 +1,33 @@
+% Note: Watching something oder time is classified as measure, not relation
+% Time resolved: Wird beruecksichtigt, dass sich ein Aspekt uebe die Zeit aendern kann?
+Question	Type (Sing/Mult)	Analysis (Measure, Relation, Hypo)	Time-Resolved (Y/N)	Predict (Y/N)
+1	S	R	Y	N
+2	M	R	N	Y
+3	M	M	Y	N
+4	M	R	N	N
+5	M	R	N	N
+6	M	R	N	N
+7	M	R	N	N
+8	M	M	N	N
+9	S	M	N	N
+10	M	H	N	N
+11	M	R	N	N
+12	M	R	N	N
+13	S	M	N	N
+14	M	M	Y	N
+15	S	M	N	N
+16	S	M	N	N
+17	M	M	N	N
+18	M	R	N	N
+19	M	M	N	N
+20	M	M	N	N
+21	M	R	Y	Y
+22	M	R	N	N
+23	M	R	N	N
+24	M	R	N	N
+25	S	R	Y	N
+26	S	R	N	N
+27	S	R	N	N
+28	S	R	Y	N
+29	M	M	N	N
+30	M	R	N	Y

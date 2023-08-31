@@ -1,0 +1,29 @@
+%\VignetteEngine[knitr:knitr]
+\documentclass{article}
+\begin{document}
+
+<<echo=FALSE, message=FALSE>>=
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(nycflights13)
+
+dat <- flights %>% mutate(timestamp=make_datetime(year, month, day, hour, minute, tz="EST")) %>% 
+                   select(timestamp, starts_with("dep"), starts_with("arr"))
+@
+
+\section{Untersuchung an Fluegen}
+Hier dokumentiere ich meine wichtigen Einsichten zum Thema Flüge aus New York.
+Verspätungen sind inAbbildung~\ref{fig:flights} dokumentiert.
+
+\begin{figure}[htb]
+<<echo=FALSE, message=FALSE, figure=TRUE>>=
+  dat %>% filter(timestamp <= ymd(20130108)) %>% 
+   mutate(wday=wday(timestamp, label=TRUE)) %>%
+   ggplot(aes(x=timestamp, y=dep_delay)) + geom_line() + 
+   facet_grid(cols=vars(wday), scale="free_x")
+@
+  \caption{Flüge aus New York}\label{fig:flights}
+\end{figure}
+\end{document}
