@@ -1,6 +1,6 @@
 library(ggplot2)
 library(tidyr)
-library(dplyr)
+library(dplyr) 
 library(ggcorrplot)
 
 
@@ -18,8 +18,11 @@ ncol(data)
 # anzahl spalten
 nrow(data)
 
+
 # aggregate same research topics and acc count
+library(dplyr)
 dat <- data %>% select(Type, Analysis, TimeResolved, "Predict") %>% group_by_all() %>% count
+print(dat)
 dat$Type <- dat[dat$Type == "M", "Type"] = "Multi"
 dat$Type <- dat[dat$Type == "S", "Type"] = "Single"
 print(dat)
