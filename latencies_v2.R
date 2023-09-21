@@ -8,27 +8,33 @@ path_to_datasets = c(
   "db_responses/arm_clock/default/axfinder/latencies.txt",
   "db_responses/arm_clock/default/countone/latencies.txt",
   "db_responses/arm_clock/default/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_calibrate/axfinder/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_calibrate/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_measure/axfinder/latencies.txt",
-  "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_measure/axfinder/latencies.txt",
+  "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_measure/countone/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-0_scenario-default_measure/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-default_measure/axfinder/latencies.txt",
-  "db_responses/x86_clock/res_duration-20_stress-1_scenario-default_measure/axfinder/latencies.txt",
+  "db_responses/x86_clock/res_duration-20_stress-1_scenario-default_measure/countone/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-default_measure/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-fifo_measure/axfinder/latencies.txt",
-  "db_responses/x86_clock/res_duration-20_stress-1_scenario-fifo_measure/axfinder/latencies.txt",
+  "db_responses/x86_clock/res_duration-20_stress-1_scenario-fifo_measure/countone/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-fifo_measure/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield_measure/axfinder/latencies.txt",
-  "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield_measure/axfinder/latencies.txt",
+  "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield_measure/countone/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield_measure/pricespread/latencies.txt",
+  
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield+fifo_measure/axfinder/latencies.txt",
-  "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield+fifo_measure/axfinder/latencies.txt",
+  "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield+fifo_measure/countone/latencies.txt",
   "db_responses/x86_clock/res_duration-20_stress-1_scenario-shield+fifo_measure/pricespread/latencies.txt"
 )
 
 data <- data.frame()
-stichprobengroesse <- 100000
+stichprobengroesse <- 10000
 
 # Schleife zum Einlesen der Datensätze
 for (i in path_to_datasets) {
@@ -55,7 +61,7 @@ for (i in path_to_datasets) {
   }
   
   # sampling ohne Verlust der Extremwerte
-  extremwerte <- dat %>% filter(ProcessingTime > quantile(ProcessingTime, 0.95))
+  extremwerte <- dat %>% filter(ProcessingTime > quantile(ProcessingTime, 0.950))
   stichprobe <- dat %>% anti_join(extremwerte, by = "ID") %>% sample_n(stichprobengroesse, replace = TRUE)
   
   # zusammenfuegen
@@ -65,12 +71,14 @@ for (i in path_to_datasets) {
 }
 print(data)
 
-ggplot(data = data, aes(x = Timestamp, y = ProcessingTime, color = Category)) +
+# Scatterplot mit farblicher Kennzeichnung und Regressionslinien erstellen
+ggplot(data, aes(x = Timestamp, y = ProcessingTime, color = Category)) +
+  geom_boxplot() +
   # geom_point() +
   # geom_line() +
-  geom_boxplot() +
-  # geom_dotplot() +
-  # facet_wrap(~Category) +
-  facet_grid(~Architecture) +
+  facet_wrap(~Architecture, scales = "free_x") +
+  # geom_smooth() + # Regressionslinien hinzufügen
   scale_x_continuous(labels = scales::comma) +  # Formatierung der x-Achsenbeschriftung
-  scale_y_continuous(labels = scales::comma)  # Formatierung der y-Achsenbeschriftung
+  scale_y_continuous(labels = scales::comma) +  # Formatierung der y-Achsenbeschriftung
+  labs(title = "Verarbeitungszeiten für Finanzstromqueries in Echtzeitdatenbanken", x = "Zeit der Anfrage [ns]", y = "Verarbeitungszeit [ns]") +
+  theme_bw()
