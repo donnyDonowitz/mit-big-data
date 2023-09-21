@@ -23,14 +23,14 @@ nrow(data)
 library(dplyr)
 dat <- data %>% select(Type, Analysis, TimeResolved, "Predict") %>% group_by_all() %>% count
 print(dat)
-dat$Type <- dat[dat$Type == "M", "Type"] = "Multi"
-dat$Type <- dat[dat$Type == "S", "Type"] = "Single"
+# dat$Type <- dat[dat$Type == "M", "Type"] = "Multi"
+# dat$Type <- dat[dat$Type == "S", "Type"] = "Single"
 print(dat)
 
 # Gestapeltes Balkendiagramm erstellen
 ggplot(dat, aes(x = Analysis, y = n, fill = paste(Type, TimeResolved, Predict, sep = "-"))) +
   geom_bar(stat = "identity", position = "stack") + #dodge
-  labs(title = "Numerische Werte nach Analysis", x = "Analysis", y = "Anzahl") +
+  labs(title = "Uebersicht der Forschungs-Fragestellungen", x = "Forschungsfragestellungen", y = "Anzahl") +
   theme_minimal()
   scale_fill_discrete(name = "Kombinationen", labels = c("M-N-N", "M-N-Y", "M-Y-N", "R-N-N", "R-N-Y", "R-Y-Y", "S-N-N", "S-Y-N"))
 
@@ -41,17 +41,12 @@ ggplot(dat, aes(x = Analysis, y = n, fill = paste(Type, TimeResolved, Predict, s
 ggplot(dat, aes(x = Analysis, y = n, fill = Type)) +
   geom_bar(stat = "identity", position = "dodge") +
   scale_x_discrete(labels = c("Hypo", "Measure", "Relation")) +
-  scale_y_continuous(breaks=c(1,2,3,4,5,10)) + 
-  facet_wrap(facets= vars(TimeResolved, Predict), labeller=label_both)+
+  scale_y_continuous(breaks=c(1,2,3,4,5,6,7,8,9,10)) + 
+  facet_wrap(facets= vars(TimeResolved, Predict), labeller=label_both) +
   scale_fill_discrete(name = "Type", labels = c("Multi", "Single")) +
-  labs(title = "Uebersicht der Forschungs-Fragestellungen", x = "Forschungsfragestellungen", y = "Anzahl")+
-  # theme_minimal()
+  labs(title = "Uebersicht der Forschungs-Fragestellungen", x = "Forschungsfragestellungen", y = "Anzahl") +
+  theme_bw()
   
-# test scatter
-ggplot(dat, aes(x = Analysis, y = n, fill = paste(Type, TimeResolved, Predict, sep = "-"))) +
-  geom_point()
-  labs(title = "Numerische Werte nach Analysis", x = "Analysis", y = "Anzahl") +
-  theme_minimal()
   
 # aggregate same research topics and acc count
 colnames(data)
@@ -75,8 +70,7 @@ stacked_data %>%
   ggplot(aes(x = Analysis, y = Count, fill=Category)) +
   geom_col(position = "stack", color = "white") +
   # scale_y_continuous(labels = scales::percent) +
-  labs(title = "Raucherstatus nach Gender",
-       subtitle = "Relative Häufigkeiten in >Gender<")
+  labs(title = "Uebersicht der Forschungs-Fragestellungen")
 
 
 
@@ -89,6 +83,5 @@ dat %>%
   geom_col(position = "stack", color = "white") +
   # scale_y_continuous(labels = scales::percent) +
   scale_fill_distiller(palette = "Blues") +
-  labs(title = "Raucherstatus nach Gender",
-       subtitle = "Relative Häufigkeiten in >Gender<")
+  labs(title = "Uebersicht der Forschungs-Fragestellungen")
 

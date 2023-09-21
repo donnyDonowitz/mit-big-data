@@ -34,7 +34,7 @@ path_to_datasets = c(
 )
 
 data <- data.frame()
-stichprobengroesse <- 10000
+stichprobengroesse <- 100000
 
 # Schleife zum Einlesen der Datensätze
 for (i in path_to_datasets) {
@@ -78,7 +78,7 @@ ggplot(data, aes(x = Timestamp, y = ProcessingTime, color = Category)) +
   # geom_line() +
   facet_wrap(~Architecture, scales = "free_x") +
   # geom_smooth() + # Regressionslinien hinzufügen
-  scale_x_continuous(labels = scales::comma) +  # Formatierung der x-Achsenbeschriftung
+  # scale_x_continuous(labels = scales::comma) +  # Formatierung der x-Achsenbeschriftung
   scale_y_continuous(labels = scales::comma) +  # Formatierung der y-Achsenbeschriftung
   labs(title = "Verarbeitungszeiten für Finanzstromqueries in Echtzeitdatenbanken", x = "Zeit der Anfrage [ns]", y = "Verarbeitungszeit [ns]") +
   theme_bw()
